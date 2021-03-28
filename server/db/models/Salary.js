@@ -1,7 +1,6 @@
 // FUNCTIONS LOGIC
 const Sequelize = require('sequelize');
 const db = require('../database');
-const User = require('./User')
 
 const Salary = db.define('salary', {
   salary: {
@@ -10,6 +9,5 @@ const Salary = db.define('salary', {
   },
 })
 
-User.hasMany(Salary);
 
 module.exports = Salary;

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 // ALL USERS
 const User = db.define('user', {
@@ -29,8 +29,8 @@ const User = db.define('user', {
   salt: {
     type: Sequelize.STRING,
     get() {
-      return () => this.getDataValue('salt')
-    }
+      return () => this.getDataValue('salt');
+    },
   },
   userType: {
     type: Sequelize.ENUM('HR', 'MANAGER', 'EMPLOYEE'),
@@ -54,7 +54,7 @@ const User = db.define('user', {
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
   },
   // NOTE: for a larger system create a table that keeps track of vacations taken which will then update this field
   vacationBalance: {
@@ -71,24 +71,24 @@ const User = db.define('user', {
 // Create Associations
 // NOTE: a self referencing table
 User.belongsTo(User, { as: 'manager' });
-User.hasMany(User, { as: 'employee' });
+User.hasMany(User, { as: 'employees', foreignKey: 'managerId' });
 
 /**
  * classMethods
  */
-User.generateSalt = function() {
-  return crypto.randomBytes(16).toString('base64')
-}
+User.generateSalt = function () {
+  return crypto.randomBytes(16).toString('base64');
+};
 
-User.encryptPassword = function(plainText, salt) {
+User.encryptPassword = function (plainText, salt) {
   return crypto
     .createHash('RSA-SHA256')
     .update(plainText)
     .update(salt)
-    .digest('hex')
-}
+    .digest('hex');
+};
 
-User.findUnmanagedEmployees = function () {
+User.findUnmanagedEmployees = () => {
   return User.findAll({
     where: {
       userType: 'EMPLOYEE',
@@ -99,14 +99,14 @@ User.findUnmanagedEmployees = function () {
 
 // NOTE: eager loading, fetching an aliased association
 // TODO: returning just the managers?
-User.findManagerAndEmployees = function () {
+User.findManagerAndEmployees = () => {
   return User.findAll({
-    where: {
-      userType: 'MANAGER',
-    },
     include: {
       model: User,
-      as: 'employee',
+      as: 'employees',
+    },
+    where: {
+      userType: 'MANAGER',
     },
   });
 };
@@ -114,32 +114,34 @@ User.findManagerAndEmployees = function () {
 /**
  * instanceMethods
  */
- User.prototype.correctPassword = function(candidatePwd) {
-  return User.encryptPassword(candidatePwd, this.salt()) === this.password()
-}
-
-User.prototype.getColleagues = function () {
-  return User.findAll({
-    where: {
-      managerId: User.managerId,
-    },
-  });
+User.prototype.correctPassword = function (candidatePwd) {
+  return User.encryptPassword(candidatePwd, this.salt()) === this.password();
 };
+
+
+// TODO: DELETE
+// User.prototype.getColleagues = () => {
+//   return User.findAll({
+//     where: {
+//       managerId: User.managerId,
+//     },
+//   });
+// };
 
 /**
  * hooks
  */
-const setSaltAndPassword = user => {
+const setSaltAndPassword = (user) => {
   if (user.changed('password')) {
-    user.salt = User.generateSalt()
-    user.password = User.encryptPassword(user.password(), user.salt())
+    user.salt = User.generateSalt();
+    user.password = User.encryptPassword(user.password(), user.salt());
   }
-}
+};
 
-User.beforeCreate(setSaltAndPassword)
-User.beforeUpdate(setSaltAndPassword)
-User.beforeBulkCreate(users => {
-  users.forEach(setSaltAndPassword)
-})
+User.beforeCreate(setSaltAndPassword);
+User.beforeUpdate(setSaltAndPassword);
+User.beforeBulkCreate((users) => {
+  users.forEach(setSaltAndPassword);
+});
 
 module.exports = User;

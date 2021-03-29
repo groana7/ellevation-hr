@@ -8,5 +8,5 @@ User.hasMany(Salary);
 module.exports = {
   User,
   db,
-  Salary
+  Salary,
 };

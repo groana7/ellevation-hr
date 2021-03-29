@@ -10,7 +10,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// where all routes are mounted onto
+// Where our routes are mounted
 app.use('/api', require('./api'));
 
 app.use(express.static(path.join(__dirname, '../public')));

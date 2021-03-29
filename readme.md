@@ -7,7 +7,7 @@ This project is a backend mockup of a Human Resources app.
 * Run npm install
 
 * Create the database:
-  createdb gracepotter ellevation-hr
+  createdb ellevation-hr
 
 * Seed the database:
   npm run seed

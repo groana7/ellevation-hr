@@ -38,12 +38,8 @@ const User = db.define('user', {
     allowNull: false,
   },
   salary: {
-    // TODO: write a hook that grabs the latest salary from Salary table
     type: Sequelize.INTEGER,
     allowNull: false,
-    get() {
-      return () => this.getDataValue('password');
-    },
   },
   // NOTE: virtual fields will not appear in our table
   isHR: {
@@ -56,12 +52,10 @@ const User = db.define('user', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-  // NOTE: for a larger system create a table that keeps track of vacations taken which will then update this field
   vacationBalance: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  // NOTE: can potentially be placed inside of salary history, and this table would grab the most recent one
   annualBonus: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -69,7 +63,6 @@ const User = db.define('user', {
 });
 
 // Create Associations
-// NOTE: a self referencing table
 User.belongsTo(User, { as: 'manager' });
 User.hasMany(User, { as: 'employees', foreignKey: 'managerId' });
 
@@ -98,7 +91,6 @@ User.findUnmanagedEmployees = () => {
 };
 
 // NOTE: eager loading, fetching an aliased association
-// TODO: returning just the managers?
 User.findManagerAndEmployees = () => {
   return User.findAll({
     include: {
@@ -117,16 +109,6 @@ User.findManagerAndEmployees = () => {
 User.prototype.correctPassword = function (candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password();
 };
-
-
-// TODO: DELETE
-// User.prototype.getColleagues = () => {
-//   return User.findAll({
-//     where: {
-//       managerId: User.managerId,
-//     },
-//   });
-// };
 
 /**
  * hooks

@@ -5,9 +5,8 @@ const db = require('../database');
 const Salary = db.define('salary', {
   salary: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
-})
-
+});
 
 module.exports = Salary;

@@ -1,57 +1,56 @@
-// This file demonstrates our Models as a class
+// Mock up of models
 
 // OPTION 1
 class User {
   constructor(name, email, password, userType, managerId, isAdmin, isHR) {
-    this.id = 1; // automatically generated, generate a unique id that includes date joined ie: 202110001
-    this.name = name; // for brevity will combine first and last name
+    this.id = 1;
+    this.name = name;
     this.email = email;
-    this.password = password; // will be encrypted
-    this.userType = userType; // will be one of the following ['MANAGER', 'EMPLOYEE', 'HR',]
-    this.managerId = managerId; // connected to this.id
-    this.isAdmin = isAdmin; // boolean
-    this.isHR = isHR; // boolean; virtual field not seen in our model(table in other tech)
-    this.salary = 500000 // automatically generated from the most current date in salary history model(table in other tech)
-    this.annualBonus = 500000// grabbed from salary history model(table in other tech)
-    this.vacationBalance = 25// grabbed from salary history model(table in other tech)
+    this.password = password;
+    this.userType = userType;
+    this.managerId = managerId;
+    this.isAdmin = isAdmin;
+    this.isHR = isHR;
+    this.salary = 500000;
+    this.annualBonus = 500000;
+    this.vacationBalance = 25;
   }
 }
 
 class Salary {
-  constructor(employeeId, salary, date){
-    this.employeeId = employeeId; // foreign key from Employee model(table in other tech)
+  constructor(employeeId, salary, date) {
+    this.employeeId = employeeId;
     this.salary = salary;
-    this.date = date; // User model(table in other tech) will generate salary field from the most recent date of this model(table in other tech)
+    this.date = date;
   }
 }
 
 // OPTION2 with Three Models
 class LoginCredentials {
-  constructor(email, password){
-    this.employeeId = employeeId; // foreign key from Employee model(table in other tech)
-    this.name = name; // for brevity will combine first and last name
-    this.password = password; // will be encrypted
+  constructor(email, password) {
+    this.employeeId = 1;
+    this.password = password;
   }
 }
 
 class User2 {
-  constructor(name, email, password, userType, managerId, isAdmin, isHR) {
-    this.id = 1; // automatically generated, generate a unique id that includes date joined ie: 202110001
-    this.name = name; // for brevity will combine first and last name
-    this.userType = userType; // will be one of the following ['MANAGER', 'EMPLOYEE', 'HR', 'ADMIN']
-    this.managerId = managerId; // connected to this.id
-    this.isAdmin = isAdmin; // boolean; virtual field not seen in our model(table in other tech)
-    this.isHR = isHR; // boolean; virtual field not seen in our model(table in other tech)
-    this.salary = 500000 // automatically generated from the most current date in salary history model(table in other tech)
+  constructor(name, userType, managerId, isAdmin, isHR) {
+    this.id = 1;
+    this.name = name;
+    this.userType = userType;
+    this.managerId = managerId;
+    this.isAdmin = isAdmin;
+    this.isHR = isHR;
+    this.salary = 500000;
   }
 }
 
 class Salary2 {
-  constructor(employeeId, salary, date){
-    this.employeeId = employeeId; // foreign key from Employee model(table in other tech)
+  constructor(employeeId, salary, date) {
+    this.employeeId = employeeId;
     this.salary = salary;
-    this.date = date; // User model(table in other tech) will generate salary field from the most recent date of this model(table in other tech)
-    this.annualBonus = 500000// grabbed from salary history model(table in other tech)
-    this.vacationBalance = 25// grabbed from salary history model(table in other tech)
+    this.date = date;
+    this.annualBonus = 500000;
+    this.vacationBalance = 25;
   }
 }

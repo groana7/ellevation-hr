@@ -1,6 +1,8 @@
-// Mock up of models
+## Mock up of models
 
-// OPTION 1
+## OPTION 1
+
+```js
 class User {
   constructor(name, email, password, userType, managerId, isAdmin, isHR) {
     this.id = 1;
@@ -24,8 +26,11 @@ class Salary {
     this.date = date;
   }
 }
+```
 
-// OPTION2 with Three Models
+## OPTION2 with Three Models
+
+```js
 class LoginCredentials {
   constructor(email, password) {
     this.employeeId = 1;
@@ -54,3 +59,4 @@ class Salary2 {
     this.vacationBalance = 25;
   }
 }
+```
